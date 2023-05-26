@@ -1,5 +1,5 @@
 {
-	"name": "fastify-ts-setup",
+	"name": "fastify-ts-app",
 	"version": "1.0.0",
 	"type": "module",
 	"description": "Fastify app boilerplate setup with Zod schema validation",
