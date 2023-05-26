@@ -1,0 +1,46 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "strict": true,
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "target": "ES2017",
+        "esModuleInterop": true,
+        "removeComments": true,
+        "preserveWatchOutput": false,
+        "allowSyntheticDefaultImports": true,
+        "forceConsistentCasingInFileNames": true,
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noEmitOnError": true,
+        "outDir": "./dist",
+        "baseUrl": "./",
+        "paths": {
+            "@constants": [
+                "./src/constants"
+            ],
+            "@features/*": [
+                "./src/features/*"
+            ],
+            "@middleware": [
+                "./src/middleware"
+            ],
+            "@routes": [
+                "./src/routes"
+            ],
+            "@types": [
+                "./src/types"
+            ],
+            "@utils": [
+                "./src/utils"
+            ]
+        }
+    },
+    "include": [
+        "src",
+        "public"
+    ]
+}
