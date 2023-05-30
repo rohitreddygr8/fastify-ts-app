@@ -9,7 +9,7 @@ import { routerPlugin } from '@routes';
 import chalk from 'chalk';
 import { fastify } from 'fastify';
 
-const server = fastify({
+export const server = fastify({
 	logger: {
 		transport: {
 			target: 'pino-pretty',
@@ -35,7 +35,7 @@ await server.register(helmetPlugin);
 
 await server.register(eTagPlugin);
 
-await server.register((fastify, _, done) => {
+await server.register(async (fastify, _, done) => {
 	fastify.get('/', (_request, reply) => {
 		return reply.type('text/html; charset=utf-8;').send(
 			`<pre style="text-align:center;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">
@@ -55,32 +55,23 @@ await server.register((fastify, _, done) => {
 		);
 	});
 
-	fastify.register(routerPlugin, { prefix: '/api' });
+	await fastify.register(routerPlugin, { prefix: '/api' });
 
 	done();
 });
 
-const start = async () => {
-	try {
-		console.log('\n');
-		console.log(
-			`${chalk.white.bold('>>> Environment variables in')} ${chalk.magenta.bold(
-				ENV.NODE_ENV.toLocaleUpperCase(),
-			)} ${chalk.white.bold('environment:')}`,
-		);
-		console.table(
-			Object.entries(ENV).map(([key, value]) => ({
-				KEY: key,
-				VALUE: value,
-			})),
-		);
-		console.log('\n');
+console.log('\n');
+console.log(
+	`${chalk.white.bold('>>> Environment variables in')} ${chalk.magenta.bold(
+		ENV.NODE_ENV.toLocaleUpperCase(),
+	)} ${chalk.white.bold('environment:')}`,
+);
+console.table(
+	Object.entries(ENV).map(([key, value]) => ({
+		KEY: key,
+		VALUE: value,
+	})),
+);
+console.log('\n');
 
-		await server.listen({ host: ENV.HOST, port: ENV.PORT });
-	} catch (err) {
-		server.log.error(err);
-		process.exit(1);
-	}
-};
-
-await start();
+await server.listen({ host: ENV.HOST, port: ENV.PORT });
