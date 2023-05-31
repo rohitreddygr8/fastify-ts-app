@@ -1,9 +1,7 @@
-import path from 'node:path';
-
 import dotEnv from 'dotenv';
 import z from 'zod';
 
-dotEnv.config({ path: path.resolve('./.env.development') });
+dotEnv.config();
 
 const envSchema = z
 	.object({
@@ -17,7 +15,8 @@ const envSchema = z
 
 	.transform((val) => ({
 		...val,
-		IS_DEV: val.NODE_ENV === 'development',
+		IS_DEV: process.env.NODE_ENV !== 'production',
+		LOGS_ENABLED: process.env.LOGS_ENABLED !== 'false',
 	}));
 
 const envVariables: Partial<Record<keyof z.infer<typeof envSchema>, unknown>> =
@@ -26,6 +25,7 @@ const envVariables: Partial<Record<keyof z.infer<typeof envSchema>, unknown>> =
 		PORT: process.env.PORT,
 		NODE_ENV: process.env.NODE_ENV,
 		MAX_REQUESTS_PER_MINUTE: process.env.MAX_REQUESTS_PER_MINUTE,
+		LOGS_ENABLED: process.env.LOGS_ENABLED,
 	};
 
 if (envVariables.NODE_ENV === 'production') {

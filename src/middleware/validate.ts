@@ -1,16 +1,11 @@
-import { preHandlerHookHandler } from 'fastify';
+import { preHandlerAsyncHookHandler } from 'fastify';
 import httpStatus from 'http-status';
-import { AnyZodObject, z, ZodError } from 'zod';
+import { AnyZodObject, ZodError } from 'zod';
 
 export const validate = (schema: AnyZodObject) => {
-	const fn: preHandlerHookHandler<any, any, any, z.infer<typeof schema>> = (
-		request,
-		reply,
-		done,
-	) => {
+	const fn: preHandlerAsyncHookHandler = async (request, reply) => {
 		try {
-			schema.parse(request);
-			return done();
+			return await schema.parseAsync(request);
 		} catch (error) {
 			if (error instanceof ZodError) {
 				return reply.status(httpStatus.BAD_REQUEST).send(error.issues);

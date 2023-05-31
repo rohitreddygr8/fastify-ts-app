@@ -1,11 +1,29 @@
-import { Role } from '@types';
-import { preHandlerHookHandler } from 'fastify';
+import { FastifyRequest, preHandlerAsyncHookHandler } from 'fastify';
+import httpStatus from 'http-status';
 
-export const auth = (role?: Role) => {
-	const fn: preHandlerHookHandler = (request, reply, done) => {
-		console.log(role);
+import { USER_ROLES } from '../constants/user-roles.js';
+import { UserRole } from '../types/user-roles.js';
 
-		done();
+const getUserAndDecorateRequest = async (request: FastifyRequest) => {
+	//Get user from database
+
+	const user = {
+		role: 'USER' as UserRole,
+	};
+	request.user = user;
+	return user;
+};
+
+export const auth = (requiredUserRole: UserRole) => {
+	const fn: preHandlerAsyncHookHandler = async (request, reply) => {
+		const userRole = (await getUserAndDecorateRequest(request)).role;
+		const hasAcess =
+			USER_ROLES[userRole].accessLevel >=
+			USER_ROLES[requiredUserRole].accessLevel;
+		if (!hasAcess) {
+			return reply.status(httpStatus.FORBIDDEN).send();
+		}
+		return;
 	};
 	return fn;
 };

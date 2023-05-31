@@ -16,35 +16,19 @@
         "noImplicitAny": true,
         "noImplicitThis": true,
         "noEmitOnError": true,
+        "incremental": true,
         "outDir": "./dist",
-        "baseUrl": "./",
-        "paths": {
-            "@constants": [
-                "./src/constants"
-            ],
-            "@features/*": [
-                "./src/features/*"
-            ],
-            "@middleware": [
-                "./src/middleware"
-            ],
-            "@routes": [
-                "./src/routes"
-            ],
-            "@types": [
-                "./src/types"
-            ],
-            "@utils": [
-                "./src/utils"
-            ]
-        }
     },
     "include": [
-        "./src",
-        "./public"
+        "src",
+        "public"
     ],
     "exclude": [
-        "./node_modules",
-        "./dist"
-    ]
+        "node_modules",
+        "dist",
+    ],
+    "ts-node": {
+        "esm": true,
+        "swc": true,
+    }
 }

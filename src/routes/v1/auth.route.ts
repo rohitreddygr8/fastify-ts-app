@@ -1,27 +1,32 @@
-import { authControllers, authValidations } from '@features/auth';
-import { auth, validate } from '@middleware';
-import { FastifyPluginCallback } from 'fastify';
+import { FastifyPluginAsync, RouteHandler } from 'fastify';
 
-export const authRouterPlugin: FastifyPluginCallback = (fastify, _, done) => {
-	fastify.post(
+import * as authController from '../../controllers/auth.controller.js';
+import { auth } from '../../middleware/auth.js';
+import { validate } from '../../middleware/validate.js';
+import * as authValidation from '../../validations/auth.validation.js';
+
+export const authRouterPlugin: FastifyPluginAsync = async (app) => {
+	app.post(
 		'/log-in',
-		{ preHandler: validate(authValidations.logInRequestBodySchema) },
-		authControllers.logIn,
+		{ preHandler: validate(authValidation.logInRequestSchema) },
+		authController.logIn as RouteHandler,
 	);
 
-	fastify.post('log-out', { preHandler: auth('user') }, authControllers.logOut);
+	app.post(
+		'/log-out',
+		{ preHandler: auth('USER') },
+		authController.logOut as RouteHandler,
+	);
 
-	fastify.post(
+	app.post(
 		'/sign-up',
-		{ preHandler: validate(authValidations.signUpRequestBodySchema) },
-		authControllers.signUp,
+		{ preHandler: validate(authValidation.signUpRequestSchema) },
+		authController.signUp as RouteHandler,
 	);
 
-	fastify.post(
+	app.post(
 		'/refresh-token',
-		{ preHandler: auth('user') },
-		authControllers.refreshToken,
+		{ preHandler: auth('USER') },
+		authController.refreshToken as RouteHandler,
 	);
-
-	done();
 };
