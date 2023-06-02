@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 
-import { app } from '../app.js';
+import { app } from '../../app.js';
 
 describe('/auth', () => {
 	describe('/log-in', () => {
