@@ -13,7 +13,8 @@
 		"start:prod": "yarn build && pm2 restart ecosystem.config.cjs --attach --no-daemon --env production",
 		"lint": "eslint ./src",
 		"lint:fix": "eslint ./src --fix",
-		"commit": "git add ./ && git cz",
+		"commit": "git cz",
+		"commit:all": "git add ./ && yarn commit",
 		"postinstall": "husky install",
 		"test": "yarn build && node --experimental-vm-modules node_modules/jest/bin/jest.js ./dist/tests"
 	},
