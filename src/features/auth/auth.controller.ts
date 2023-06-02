@@ -1,6 +1,6 @@
 import { RouteHandler } from 'fastify';
 
-import { LoginRequestBody, SignUpRequestBody } from '../types/auth.js';
+import { LoginRequestBody, SignUpRequestBody } from './auth.types.js';
 
 export const logIn: RouteHandler<{ Body: LoginRequestBody }> = (
 	request,

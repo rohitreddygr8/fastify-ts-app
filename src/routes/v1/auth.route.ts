@@ -1,9 +1,9 @@
 import { FastifyPluginAsync, RouteHandler } from 'fastify';
 
-import * as authController from '../../controllers/auth.controller.js';
+import * as authController from '../../features/auth/auth.controller.js';
+import * as authValidation from '../../features/auth/auth.validation.js';
 import { auth } from '../../middleware/auth.js';
 import { validate } from '../../middleware/validate.js';
-import * as authValidation from '../../validations/auth.validation.js';
 
 export const authRouterPlugin: FastifyPluginAsync = async (app) => {
 	app.post(

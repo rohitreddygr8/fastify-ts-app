@@ -1,9 +1,6 @@
 import { z } from 'zod';
 
-import {
-	logInRequestSchema,
-	signUpRequestSchema,
-} from '../validations/auth.validation.js';
+import { logInRequestSchema, signUpRequestSchema } from './auth.validation.js';
 
 export type LoginRequestBody = z.infer<typeof logInRequestSchema>['body'];
 
