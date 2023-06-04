@@ -17,6 +17,7 @@ import handlebars from 'handlebars';
 import { ENV } from './constants/env-vars.js';
 import { authRouterPlugin } from './routes/v1/auth.route.js';
 import { viewRouterPlugin } from './routes/v1/view.route.js';
+import { connectToDb } from './utils/connect-to-db.js';
 
 export const app = fastify({
 	logger: ENV.LOGS_ENABLED && {
@@ -92,13 +93,14 @@ export const startServer = async () => {
 				VALUE: value,
 			})),
 		);
-		console.log(`\n${chalk.green.bold('Starting server...')}`);
-		console.log('\n');
-
+		console.log(`\n${chalk.green.bold('>>> Starting server...')}`);
+		await connectToDb();
 		await app.listen({ host: ENV.HOST, port: ENV.PORT });
+		console.log(chalk.green.bold('>>> Started server successfully ✅'));
+		console.log('\n');
 	} catch (err) {
 		console.error(err);
-		console.log(`${chalk.red.bold('Stopping server...')}`);
+		console.log(`${chalk.red.bold('Stopping server... ❌')}`);
 		await app.close();
 	}
 };
